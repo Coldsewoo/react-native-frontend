@@ -3,6 +3,10 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import Chip from '../atoms/Chip'
 import CircleText from '../atoms/CircleText'
 
+import { inject, observer } from 'mobx-react'
+
+@inject('rootStore')
+@observer
 export default class EstimationBuyItem extends Component {
   constructor(props) {
     super(props)
@@ -16,6 +20,7 @@ export default class EstimationBuyItem extends Component {
     const color = 'rgba(80,80,80,0.5)'
     this.setState({ color })
   }
+
   _renderChips = options => {
     return options.map((option, idx) => {
       const activated = false
@@ -39,6 +44,8 @@ export default class EstimationBuyItem extends Component {
   }
 
   render() {
+    const len = this.props.rootStore.deals.filter(deal => deal.cartId === this.props.item.id).length
+
     return (
       <TouchableOpacity
         style={{ ...styles.Container, width: this.props.width }}

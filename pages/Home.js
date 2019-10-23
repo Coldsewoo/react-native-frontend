@@ -1,5 +1,5 @@
-//This is an example code for Navigation Drawer with Custom Side bar//
 import React, { Component } from 'react'
+import { observer, inject } from 'mobx-react'
 //import react in our code.
 import { StyleSheet, Dimensions, View, Text, TouchableOpacity, ScrollView, Image, FlatList, Alert } from 'react-native'
 // import all basic components
@@ -11,57 +11,14 @@ import UserFrom from '../templates/UserForm'
 
 const screen = Dimensions.get('window')
 
-const KCData = [
-  {
-    id: 1,
-    date: 20190920,
-    district1: '성북구',
-    district2: '안암동',
-    buildingType: '아파트',
-    trasactionType: '전세',
-    saved: 100,
-    comment:
-      '투자부동산 전문 투자자가 소개하는 실전 부자 공부 노하우를 지금 확인해보세요. ... 부동산을 거래하면 세금이 발생합니다. ',
-  },
-  {
-    id: 2,
-    date: 20190920,
-    district1: '동대문구',
-    district2: '용두동',
-    buildingType: '아파트',
-    trasactionType: '전세',
-    saved: 250,
-    comment: '너무너무 좋아요~',
-  },
-  {
-    id: 3,
-    date: 20190920,
-    district1: '종로구',
-    district2: '숭인2동',
-    buildingType: '빌라',
-    trasactionType: '매매',
-    saved: 150,
-    comment: '너무너무 좋아요~',
-  },
-  {
-    id: 4,
-    date: 20190920,
-    district1: '성북구',
-    district2: '안암동',
-    buildingType: '아파트',
-    trasactionType: '전세',
-    saved: 100,
-    comment: '너무너무 좋아요~',
-  },
-]
-
+@inject('KCStore')
+@observer
 export default class HomePage extends Component {
-  //Screen1 Component
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       showUserForm: false,
-      myCart: [11],
+      myCart: [1],
     }
   }
 
@@ -142,7 +99,7 @@ export default class HomePage extends Component {
             <Text style={{ fontSize: 25, fontWeight: '600' }}>최근 거래후기</Text>
             <FlatList
               style={styles.KCList}
-              data={KCData}
+              data={this.props.KCStore.KCArray}
               keyExtractor={this._keyExtractor}
               showsVerticalScrollIndicator={false}
               ItemSeparatorComponent={() => <Separator height={1} color="rgb(240,240,240)" width={screen.width - 30} />}

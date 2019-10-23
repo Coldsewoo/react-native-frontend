@@ -6,189 +6,12 @@ import Separator from '../atoms/Separator'
 import DealerBuyItem from '../components/DealerBuyItem'
 import DealerSellItem from '../components/DealerSellItem'
 
-const screen = Dimensions.get('window')
-const dealRequestData = [
-  {
-    id: 1,
-    type: '매수',
-    district1: '강남구',
-    district2: '압구정동',
-    transactionOptions: ['매매', '전세'],
-    buildingOptions: ['아파트', '빌라'],
-    depositFrom: 1000,
-    depositTo: 5000,
-    currentDeal: [
-      {
-        id: 1,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'abc 부동산',
-        value: 0.5,
-      },
-      {
-        id: 2,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'fjiejife 부동산',
-        value: 0.4,
-      },
-      {
-        id: 3,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'asd 부동산',
-        value: 0.3,
-      },
-    ],
-    status: '진행중',
-  },
-  {
-    id: 2,
-    type: '매수',
-    district1: '성북구',
-    district2: '안암동',
-    depositFrom: 5000,
-    depositTo: 7000,
-    transactionOptions: ['매매', '전세', '월세'],
-    buildingOptions: ['아파트', '빌라', '원룸'],
-    currentDeal: [
-      {
-        id: 1,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'abc 부동산',
-        value: 0.5,
-      },
-      {
-        id: 2,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'fjiejife 부동산',
-        value: 0.4,
-      },
-      {
-        id: 3,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'as12d 부동산',
-        value: 0.3,
-      },
-      {
-        id: 4,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'as12d 부동산',
-        value: 0.3,
-      },
-      {
-        id: 5,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'as12d 부동산',
-        value: 0.3,
-      },
-      {
-        id: 6,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'abc 부동산',
-        value: 0.5,
-      },
-      {
-        id: 7,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'abc 부동산',
-        value: 0.5,
-      },
-      {
-        id: 8,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'abc 부동산',
-        value: 0.5,
-      },
-      {
-        id: 9,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'abc 부동산',
-        value: 0.5,
-      },
-      {
-        id: 10,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'abc 부동산',
-        value: 0.5,
-      },
-      {
-        id: 11,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'abc 부동산',
-        value: 0.5,
-      },
-    ],
-    status: '진행중',
-  },
-  {
-    id: 3,
-    type: '매도',
-    floor: 3,
-    area: 24.3,
-    district1: '성북구',
-    district2: '정릉동',
-    address: '정릉아파트',
-    currentDeal: [],
-    status: '진행중',
-    transactionOptions: ['매매', '전세'],
-    buildingOptions: ['아파트'],
-  },
-  {
-    id: 4,
-    type: '매도',
-    district1: '강남구',
-    district2: '압구정동',
-    address: '압구정아파트',
-    floor: 10,
-    area: 32,
-    transactionOptions: ['매매'],
-    buildingOptions: ['아파트'],
-    currentDeal: [
-      {
-        id: 1,
-        name: 'abc 부동산',
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        value: 0.5,
-      },
-      {
-        id: 2,
-        name: 'fjiejife 부동산',
-        address: '서울시 강남구 압구정동',
-        star: 3.5,
-        value: 0.4,
-      },
-      {
-        id: 3,
-        name: 'as12d 부동산',
-        address: '서울시 강남구 압구정동',
-        star: 4.2,
-        value: 0.3,
-      },
-      {
-        id: 5,
-        name: 'as12d 부동산',
-        address: '서울시 강남구 압구정동',
-        star: 4.5,
-        value: 0.3,
-      },
-    ],
-    status: '진행중',
-  },
-]
+import { inject, observer } from 'mobx-react'
 
+const screen = Dimensions.get('window')
+
+@inject('rootStore')
+@observer
 export default class DealerPage extends Component {
   constructor() {
     super()
@@ -231,8 +54,7 @@ export default class DealerPage extends Component {
       return v.buildingOptions.some(e => buildingOptions.includes(e))
     }
     const filters = [district1Filter, district2Filter, typeFilter, transactionOptionsFilter, buildingOptionsFilter]
-    const filteredData = dealRequestData.filter(v => filters.every(f => f(v)))
-    return filteredData
+    return this.props.rootStore.filteredDeal(filters)
   }
 
   _closeFilterModal = () => this.setState({ showFilterModal: false })
@@ -256,7 +78,7 @@ export default class DealerPage extends Component {
     }
     this.setState({ selected: current })
   }
-
+  ß
   _keyExtractor = item => {
     return item.id.toString()
   }

@@ -19,8 +19,12 @@ import CircleText from '../atoms/CircleText'
 import MyEstimationModalDeal from '../components/MyEstimationModalDeal'
 import { AntDesign } from '@expo/vector-icons'
 
+import { observer, inject } from 'mobx-react'
+
 const screen = Dimensions.get('window')
 
+@inject('rootStore')
+@observer
 export default class MyEstimationModal extends Component {
   constructor(props) {
     super(props)
@@ -114,12 +118,14 @@ export default class MyEstimationModal extends Component {
   }
 
   _cancelSelected = () => {
-    const current = this.state.currentDeal
+    const dealToCancel = this.state.currentDeal
       .map(e => e)
       .filter(deal => {
-        return !this.state.currentDealModal.includes(deal.id)
+        return this.state.currentDealModal.includes(deal.id)
       })
-    this.setState({ currentDeal: current, currentDealModal: [] })
+    dealToCancel.map(deal => this.props.rootStore.removeDeal(deal.id))
+    // this.props.item.setDeals(current)
+    this.setState({ currentDealModal: [] })
   }
 
   _sendQueryAlert = () => {

@@ -4,79 +4,16 @@ import ModalLayout from '../components/ModalLayout'
 import PickerView from '../atoms/PickerVIewAndroid'
 import Chip from '../atoms/Chip'
 import FormTextInput from '../atoms/FormTextInput'
+import {
+  district1Options,
+  district2Options,
+  buildingOptions,
+  transactionOptions,
+  dealOptions,
+} from '../store/DealOptions'
 
 const screen = Dimensions.get('window')
 
-const district1Options = [
-  { label: '전체', value: '전체' },
-  { label: '강남구', value: '강남구' },
-  { label: '서초구', value: '서초구' },
-  { label: '송파구', value: '송파구' },
-  { label: '성북구', value: '성북구' },
-]
-const district2Options = {
-  전체: [{ label: '전체', value: '전체' }],
-  강남구: [
-    { label: '전체', value: '전체' },
-    { label: '신사동', value: '신사동' },
-    { label: '논현동', value: '논현동' },
-    { label: '압구정동', value: '압구정동' },
-    { label: '청담동', value: '청담동' },
-    { label: '삼성동', value: '삼성동' },
-    { label: '대치동', value: '대치동' },
-    { label: '역삼동', value: '역삼동' },
-    { label: '도곡동', value: '도곡동' },
-    { label: '개포동', value: '개포동' },
-    { label: '세곡동', value: '세곡동' },
-    { label: '일원동', value: '일원동' },
-    { label: '수서동', value: '수서동' },
-  ],
-  서초구: [
-    { label: '전체', value: '전체' },
-    { label: '서초동', value: '서초동' },
-    { label: '잠원동', value: '잠원동' },
-    { label: '반포동', value: '반포동' },
-    { label: '방배동', value: '방배동' },
-    { label: '양재동', value: '양재동' },
-    { label: '내곡동', value: '내곡동' },
-  ],
-  송파구: [
-    { label: '전체', value: '전체' },
-    { label: '풍납동', value: '풍납동' },
-    { label: '거여동', value: '거여동' },
-    { label: '마천동', value: '마천동' },
-    { label: '방이동', value: '방이동' },
-    { label: '오륜동', value: '오륜동' },
-    { label: '오금동', value: '오금동' },
-    { label: '송파동', value: '송파동' },
-    { label: '석촌동', value: '석촌동' },
-    { label: '삼전동', value: '삼전동' },
-    { label: '가락동', value: '가락동' },
-    { label: '문정동', value: '문정동' },
-    { label: '장지동', value: '장지동' },
-    { label: '위례동', value: '위례동' },
-    { label: '잠실동', value: '잠실동' },
-  ],
-  성북구: [
-    { label: '전체', value: '전체' },
-    { label: '성북동', value: '성북동' },
-    { label: '삼선동', value: '삼선동' },
-    { label: '동선동', value: '동선동' },
-    { label: '돈암동', value: '돈암동' },
-    { label: '안암동', value: '안암동' },
-    { label: '보문동', value: '보문동' },
-    { label: '정릉동', value: '정릉동' },
-    { label: '길음동', value: '길음동' },
-    { label: '종암동', value: '종암동' },
-    { label: '월곡동', value: '월곡동' },
-    { label: '장위동', value: '장위동' },
-    { label: '석관동', value: '석관동' },
-  ],
-}
-
-const buildingOptions = ['아파트', '빌라', '오피스텔', '원룸']
-const transactionOptions = ['매매', '전세', '월세']
-const dealOptions = ['전체', '매수', '매도']
 export default class DealerFilterModal extends Component {
   constructor(props) {
     super(props)

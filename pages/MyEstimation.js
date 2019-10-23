@@ -4,190 +4,15 @@ import EstimationBuyItem from '../components/EstimationBuyItem'
 import EstimationSellItem from '../components/EstimationSellItem'
 import Separator from '../atoms/Separator'
 import MyEstimationModal from '../templates/MyEstimationModal'
+import { observer, inject } from 'mobx-react'
 
 const screen = Dimensions.get('window')
 
-const myCartData = [
-  {
-    id: 1,
-    type: '매수',
-    district1: '강남구',
-    district2: '압구정동',
-    transactionOptions: ['매매', '전세'],
-    buildingOptions: ['아파트', '빌라'],
-    depositFrom: 1000,
-    depositTo: 5000,
-    currentDeal: [
-      {
-        id: 1,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'abc 부동산',
-        value: 0.5,
-      },
-      {
-        id: 2,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'fjiejife 부동산',
-        value: 0.4,
-      },
-      {
-        id: 3,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'asd 부동산',
-        value: 0.3,
-      },
-    ],
-    status: '진행중',
-  },
-  {
-    id: 2,
-    type: '매수',
-    district1: '성북구',
-    district2: '안암동',
-    depositFrom: 5000,
-    depositTo: 7000,
-    transactionOptions: ['매매', '전세', '월세'],
-    buildingOptions: ['아파트', '빌라', '원룸'],
-    currentDeal: [
-      {
-        id: 1,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'abc 부동산',
-        value: 0.5,
-      },
-      {
-        id: 2,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'fjiejife 부동산',
-        value: 0.4,
-      },
-      {
-        id: 3,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'as12d 부동산',
-        value: 0.3,
-      },
-      {
-        id: 4,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'as12d 부동산',
-        value: 0.3,
-      },
-      {
-        id: 5,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'as12d 부동산',
-        value: 0.3,
-      },
-      {
-        id: 6,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'abc 부동산',
-        value: 0.5,
-      },
-      {
-        id: 7,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'abc 부동산',
-        value: 0.5,
-      },
-      {
-        id: 8,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'abc 부동산',
-        value: 0.5,
-      },
-      {
-        id: 9,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'abc 부동산',
-        value: 0.5,
-      },
-      {
-        id: 10,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'abc 부동산',
-        value: 0.5,
-      },
-      {
-        id: 11,
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        name: 'abc 부동산',
-        value: 0.5,
-      },
-    ],
-    status: '진행중',
-  },
-  {
-    id: 3,
-    type: '매도',
-    floor: 3,
-    area: 24.3,
-    district1: '성북구',
-    district2: '정릉동',
-    address: '정릉아파트',
-    currentDeal: [],
-    status: '진행중',
-  },
-  {
-    id: 4,
-    type: '매도',
-    district1: '강남구',
-    district2: '압구정동',
-    address: '압구정아파트',
-    floor: 10,
-    area: 32,
-    currentDeal: [
-      {
-        id: 1,
-        name: 'abc 부동산',
-        address: '서울시 강남구 압구정동',
-        star: 1.5,
-        value: 0.5,
-      },
-      {
-        id: 2,
-        name: 'fjiejife 부동산',
-        address: '서울시 강남구 압구정동',
-        star: 3.5,
-        value: 0.4,
-      },
-      {
-        id: 3,
-        name: 'as12d 부동산',
-        address: '서울시 강남구 압구정동',
-        star: 4.2,
-        value: 0.3,
-      },
-      {
-        id: 5,
-        name: 'as12d 부동산',
-        address: '서울시 강남구 압구정동',
-        star: 4.5,
-        value: 0.3,
-      },
-    ],
-    status: '진행중',
-  },
-]
-
+@inject('rootStore')
+@observer
 export default class MyEstimationPage extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       currentModal: [],
     }
@@ -211,7 +36,9 @@ export default class MyEstimationPage extends Component {
   }
 
   _renderModal = id => {
-    const item = myCartData.filter(e => e.id === id)[0]
+    const deals = this.props.rootStore.deals.filter(deal => deal.cartId === id).map(e => e)
+    const item = this.props.rootStore.currentCart(id, deals)
+    item.setDeals(deals)
     return <MyEstimationModal key={id} item={item} onPress={id => this._onCloseModal(id)} />
   }
 
@@ -225,7 +52,7 @@ export default class MyEstimationPage extends Component {
           <View style={styles.EstimationListContainer}>
             <FlatList
               style={styles.EstimationList}
-              data={myCartData}
+              data={this.props.rootStore.carts}
               keyExtractor={this._keyExtractor}
               showsVerticalScrollIndicator={false}
               ItemSeparatorComponent={() => <View style={{ marginBottom: 10 }}></View>}

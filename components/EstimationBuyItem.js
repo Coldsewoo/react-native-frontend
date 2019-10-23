@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import Chip from '../atoms/Chip'
 import CircleText from '../atoms/CircleText'
+import { observer, inject } from 'mobx-react'
 
+@inject('rootStore')
+@observer
 export default class EstimationBuyItem extends Component {
   constructor(props) {
     super(props)
@@ -31,6 +34,8 @@ export default class EstimationBuyItem extends Component {
   }
 
   render() {
+    const len = this.props.rootStore.deals.filter(e => e.cartId === this.props.item.id).length
+
     return (
       <TouchableOpacity
         style={{ ...styles.Container, width: this.props.width }}
@@ -61,9 +66,9 @@ export default class EstimationBuyItem extends Component {
           <View>
             <CircleText
               size={25}
-              color={this.props.item.currentDeal.length > 0 ? 'rgb(220,20,60)' : 'rgb(25,148,255)'}
+              color={len > 0 ? 'rgb(220,20,60)' : 'rgb(25,148,255)'}
               textSize={15}
-              text={this.props.item.currentDeal.length}
+              text={len}
               textColor="white"
             />
           </View>

@@ -2,10 +2,21 @@ import React, { Component } from 'react'
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import Chip from '../atoms/Chip'
 import CircleText from '../atoms/CircleText'
+import { observer, inject } from 'mobx-react'
 
+@inject('rootStore')
+@observer
 export default class EstimationSellItem extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      len: 0,
+    }
+  }
+
+  componentDidMount() {
+    const len = this.props.rootStore.deals.filter(e => e.cartId === this.props.item.id).length
+    this.setState({ len })
   }
 
   _convertedArea = area => {
@@ -56,9 +67,9 @@ export default class EstimationSellItem extends Component {
           <View>
             <CircleText
               size={25}
-              color={this.props.item.currentDeal.length > 0 ? 'rgb(220,20,60)' : 'rgb(25,148,255)'}
+              color={this.state.len > 0 ? 'rgb(220,20,60)' : 'rgb(25,148,255)'}
               textSize={15}
-              text={this.props.item.currentDeal.length}
+              text={this.state.len}
               textColor="white"
             />
           </View>
